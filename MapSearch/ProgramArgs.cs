@@ -7,8 +7,9 @@ namespace MapSearch;
 [ArgExceptionBehavior(ArgExceptionPolicy.StandardExceptionHandling)]
 public class ProgramArgs
 {
-        // This argument is required and if not specified the user will
-        // be prompted.
+        [HelpHook, ArgShortcut("-h"), ArgDescription("Shows this help")]
+        public bool Help { get; set; }
+        
         [ArgRequired(), ArgDescription("Google Maps API Key"), ArgShortcut("-k")]
         public string GoogleApiKey { get; set; }
         
@@ -24,8 +25,7 @@ public class ProgramArgs
         [ArgDescription("Output file"), ArgShortcut("-o")]
         public string OutputFile { get; set; } = "output.csv";
         
-        [HelpHook, ArgShortcut("-?"), ArgDescription("Shows this help")]
-        public bool Help { get; set; }
+
         
         // This non-static Main method will be called and it will be able to access the parsed and populated instance level properties.
         public async Task Main()
