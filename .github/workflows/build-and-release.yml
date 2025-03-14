@@ -44,9 +44,6 @@ jobs:
         name: build
         path: ./publish
     - run: cd publish; zip -r application.zip *
-        
-    - name: Display structure of downloaded files
-      run: ls 
 
     - name: Create GitHub Release
       id: create_release
@@ -65,6 +62,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./application.zip
+        asset_path: ./publish/application.zip
         asset_name: MapSearch.v${{ github.run_number }}.zip
         asset_content_type: application/zip
