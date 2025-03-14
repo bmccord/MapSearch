@@ -43,7 +43,7 @@ jobs:
       with:
         name: build
         path: ./publish
-    - run: cd publish; zip -r application.zip publish/
+    - run: cd publish; zip -r application.zip *
         
     - name: Display structure of downloaded files
       run: ls 
