@@ -43,6 +43,7 @@ jobs:
       with:
         name: build
         path: ./publish
+    - run: zip -r application.zip publish/
         
     - name: Display structure of downloaded files
       run: ls -R     
