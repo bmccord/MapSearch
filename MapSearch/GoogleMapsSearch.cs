@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
+using PowerArgs;
 
 namespace MapSearch;
 
@@ -7,7 +8,7 @@ public static class GoogleMapsSearch
 {
     private static readonly HttpClient Client = new HttpClient();
 
-    public static async Task<List<PlaceResult>> SearchCabinetShopsAsync(string apiKey, string zipCodes, string radius)
+    public static async Task<List<PlaceResult>> SearchCabinetShopsAsync(string apiKey, string zipCodes, string radius, string keyword, string type)
     {
         var places  = new List<PlaceResult>();
         
@@ -46,10 +47,15 @@ public static class GoogleMapsSearch
             string latitude = location["lat"].ToString();
             string longitude = location["lng"].ToString();
 
-            // Search for cabinet shops using keyword
-            string keyword = "cabinet shop";
-            string placesUrl =
-                $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&keyword={keyword}&key={apiKey}";
+            string placesUrl;
+            if (!type.IsNullOrEmpty())
+            {
+                placesUrl =
+                    $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&types={type}&key={apiKey}";
+            } else {
+                placesUrl =
+                    $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&keyword={keyword}&key={apiKey}";
+            }
 
             places.AddRange(await FetchAllResults(placesUrl, apiKey, zip));            
         }

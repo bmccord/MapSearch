@@ -19,8 +19,11 @@ public class ProgramArgs
         [ArgDescription("Radius in miles"), ArgShortcut("-r")]
         public int Radius { get; set; } = 50;
         
-        [ArgRequired(), ArgDescription("Search term"), ArgShortcut("-s")]
+        [ArgRequired(IfNot = "Type"), ArgCantBeCombinedWith("Type"), ArgDescription("Search term"), ArgShortcut("-s")]
         public string SearchTerm { get; set; }
+        
+        [ArgRequired(IfNot = "SearchTerm"), ArgCantBeCombinedWith("SearchTerm"), ArgDescription("Google type"), ArgShortcut("-t")]
+        public string Type { get; set; }
         
         [ArgDescription("Output file"), ArgShortcut("-o")]
         public string OutputFile { get; set; } = "output.csv";
@@ -32,7 +35,7 @@ public class ProgramArgs
         {
                 try
                 {
-                        var results = await GoogleMapsSearch.SearchCabinetShopsAsync(GoogleApiKey, Zips, GoogleMapsSearch.MilesToMeters(Radius).ToString(CultureInfo.InvariantCulture));
+                        var results = await GoogleMapsSearch.SearchCabinetShopsAsync(GoogleApiKey, Zips, GoogleMapsSearch.MilesToMeters(Radius).ToString(CultureInfo.InvariantCulture), SearchTerm, Type);
                         results = RemoveDuplicates(results);
                         results = results.OrderBy(r=>r.SearchZip).ThenBy(r => r.Name).ToList(); // Sort by name
                         foreach (var result in results)
