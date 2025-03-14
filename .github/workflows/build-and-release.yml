@@ -43,7 +43,7 @@ jobs:
       with:
         name: build
         path: ./publish
-    - run: zip -r application.zip publish/
+    - run: zip -r application.zip publish/*.*
         
     - name: Display structure of downloaded files
       run: ls 
@@ -66,5 +66,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./application.zip
-        asset_name: application.zip
+        asset_name: MapSearch v${{ github.run_number }}.zip
         asset_content_type: application/zip
